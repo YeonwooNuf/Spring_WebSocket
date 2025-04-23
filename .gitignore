@@ -1,0 +1,98 @@
+# === 기존 항목 유지 ===
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+.DS_Store
+
+# === 추가 항목 (웹소켓 & Spring 관련) ===
+
+# 로그 파일
+*.log
+logs/
+log/
+
+# 환경 파일 (.env 등)
+.env
+.env.*
+
+# Local DB/Cache
+*.h2.db
+*.mv.db
+*.trace.db
+
+# JetBrains Workspace 디렉토리 (새 버전)
+.idea/
+
+# Operating System
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Java Server Specific
+*.war
+*.ear
+
+# WebSocket/Spring 통합 개발 시 나올 수 있는 임시 디렉토리
+tmp/
+.spring/
+
+# Gradle 캐시 (혹시 모를 경우 대비)
+.gradle/
+build/
+
+# IntelliJ Run Configs
+.idea/runConfigurations/
+
+# macOS나 Linux 개발환경에서 생길 수 있는 파일
+*.swp
+*.swo
+*.bak
+*~
+
+# Test coverage tools
+jacoco.exec
+.coverage
+coverage-final.json
+.nyc_output/
+coverage/
+
+# Node 사용 시 생길 수 있는 것 (프론트 연동 프로젝트 대비)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 통합 테스트 시 생성되는 파일
+test-output/
+surefire-reports/
