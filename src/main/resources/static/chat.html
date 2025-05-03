@@ -1,34 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Web Chat</title>
+    <title>STOMP Chat</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 </head>
 <body>
-<h2>WebSocket Chat Room</h2>
-<input type="text" id="messageInput" placeholder="메시지 입력" />
+<h2>STOMP Chat Room</h2>
+<input type="text" id="sender" placeholder="작성자 이름" />
+<input type="text" id="message" placeholder="메시지 입력" />
 <button onclick="sendMessage()">보내기</button>
-<ul id="chatBox"></ul>
+<ul id="chat"></ul>
 
 <script>
-    const socket = new WebSocket("ws://localhost:8080/ws/chat");
+    let stompClient = null;
 
-    socket.onopen = () => {
-        console.log("✅ 서버 연결됨");
-    };
+    function connect() {
+        const socket = new SockJS("/ws-chat");  // WebSocket 엔드포인트
+        stompClient = Stomp.over(socket);
 
-    socket.onmessage = (event) => {
-        const message = event.data;
-        const li = document.createElement("li");
-        li.textContent = message;
-        document.getElementById("chatBox").appendChild(li);
-    };
+        stompClient.connect({}, function () {
+            console.log("🔌 연결 성공");
+
+            // 메시지 수신 처리
+            stompClient.subscribe("/topic/public", function (msg) {
+                const res = JSON.parse(msg.body);
+                const li = document.createElement("li");
+                li.textContent = `${res.sender}: ${res.content}`;
+                document.getElementById("chat").appendChild(li);
+            });
+        });
+    }
 
     function sendMessage() {
-        const input = document.getElementById("messageInput");
-        socket.send(input.value);
-        input.value = "";
+        const sender = document.getElementById("sender").value;
+        const content = document.getElementById("message").value;
+
+        stompClient.send("/app/chat", {}, JSON.stringify({
+            sender: sender,
+            content: content
+        }));
+
+        document.getElementById("message").value = '';
     }
+
+    connect();  // 페이지 로드시 연결 시도
 </script>
 </body>
 </html>
